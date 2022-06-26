@@ -1,10 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
-  imports = [./treesitter.nix ./statusline.nix];
+{ config, lib, pkgs, ... }: {
+  imports = [ ./treesitter.nix ./statusline.nix ];
 
   vim.runtimeDir = ./nvim;
 
@@ -15,12 +10,10 @@
   vim.scrolloff = 7;
   vim.signcolumn = "yes";
   vim.cmdheight = 2;
-  vim.completeopt = ["menu" "menuone" "noselect"];
+  vim.completeopt = [ "menu" "menuone" "noselect" ];
   vim.updatetime = 300;
   vim.colorcolumn = "100";
-  vim.commands = {
-    "SpellFr" = "setlocal spell spelllang=fr";
-  };
+  vim.commands = { "SpellFr" = "setlocal spell spelllang=fr"; };
 
   vim.theme.enable = true;
 
@@ -39,42 +32,28 @@
       "<C-e>" = "cmp.mapping.close()";
       "<Tab>" = ''cmp.mapping(cmp.mapping.select_next_item(), { "i", "s" })'';
       "<CR>" = "cmp.mapping.confirm({ select = true })";
-      "<Down>" = "cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), {'i'})";
-      "<Up>" = "cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), {'i'})";
+      "<Down>" =
+        "cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), {'i'})";
+      "<Up>" =
+        "cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), {'i'})";
     };
 
-    icons = {
-      enable = true;
-    };
+    icons = { enable = true; };
 
     sources = {
-      nvim_lsp = {
-        enable = true;
-      };
-      buffer = {
-        enable = true;
-      };
-      path = {
-        enable = true;
-      };
-      latex_symbols = {
-        enable = true;
-      };
-      calc = {
-        enable = true;
-      };
-      vsnip = {
-        enable = true;
-      };
+      nvim_lsp = { enable = true; };
+      buffer = { enable = true; };
+      path = { enable = true; };
+      latex_symbols = { enable = true; };
+      calc = { enable = true; };
+      vsnip = { enable = true; };
     };
   };
 
   vim.filetype = {
     enable = true;
 
-    literal = {
-      Jenkinsfile = "groovy";
-    };
+    literal = { Jenkinsfile = "groovy"; };
     extensions = {
       nix = "nix";
       rsh = "rsh";
@@ -89,11 +68,7 @@
   vim.kommentary = {
     enable = true;
 
-    langs = {
-      c = {
-        prefer = "multi_line";
-      };
-    };
+    langs = { c = { prefer = "multi_line"; }; };
   };
 
   vim.visuals = {
@@ -102,9 +77,7 @@
       default = true;
     };
 
-    plantumlSyntax = {
-      enable = true;
-    };
+    plantumlSyntax = { enable = true; };
 
     indentline = {
       enable = true;
@@ -149,7 +122,7 @@
       "K" = nrsilent "<cmd>lua vim.lsp.buf.hover()<CR>";
       "ff" = nrsilent "<cmd>${config.vim.lsp.format.command}<CR>";
 
-	  "<leader>r" = nrsilent ":IncRename ";
+      "<leader>r" = nrsilent ":IncRename ";
     };
 
     v = {
@@ -163,25 +136,21 @@
     lightbulb = true;
     diagnosticsPopup = true;
 
-    signatures = {
-      enable = true;
-    };
+    signatures = { enable = true; };
 
     format = {
       enable = true;
-      disabledClients = ["rnix"];
+      disabledClients = [ "rnix" ];
     };
 
-    lspLoading = {
-      enable = true;
-    };
+    lspLoading = { enable = true; };
 
     null-ls = {
       enable = true;
 
       sources = [
         "builtins.formatting.alejandra"
-		"builtins.formatting.black"
+        "builtins.formatting.black"
         "builtins.formatting.stylua"
         "builtins.formatting.trim_whitespace"
         "builtins.diagnostics.shellcheck"
@@ -190,32 +159,18 @@
     };
 
     lang = {
-      c = {
-        enable = true;
-      };
-
-      nix = {
-        enable = true;
-      };
-
-      bash = {
-        enable = true;
-      };
-
+      c = { enable = true; };
+      nix = { enable = true; };
+      bash = { enable = true; };
       rust = {
         enable = true;
         crates = {
           enable = true;
           completion = true;
         };
-
         settings = {
-          cargo = {
-            allFeatures = true;
-          };
-          checkOnSave = {
-            command = "clippy";
-          };
+          cargo = { allFeatures = true; };
+          checkOnSave = { command = "clippy"; };
         };
       };
     };

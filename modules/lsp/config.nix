@@ -1,40 +1,29 @@
-{
-  config,
-  lib,
-  pgks,
-  ...
-}:
+{ config, lib, pgks, ... }:
 with lib; {
   config.vim.lsp = {
     enable = mkDefault false;
     capabilities = mkDefault "";
     onAttach = mkDefault "";
-    servers = mkDefault {};
+    servers = mkDefault { };
     lightbulb = mkDefault false;
     diagnosticsPopup = mkDefault false;
-    signatures = {
-      enable = mkDefault false;
-    };
+    signatures = { enable = mkDefault false; };
     null-ls = {
       enable = mkDefault false;
-      sources = mkDefault [];
+      sources = mkDefault [ ];
     };
     luaLocals = mkDefault "";
 
-	lspLoading = {
-		enable = mkDefault false;
-	};
+    lspLoading = { enable = mkDefault false; };
 
     format = {
       enable = mkDefault false;
-      disabledClients = mkDefault [];
+      disabledClients = mkDefault [ ];
       command = mkDefault "LspFormatting";
     };
 
     lang = {
-      c = {
-        enable = mkDefault false;
-      };
+      c = { enable = mkDefault false; };
       rust = {
         enable = mkDefault false;
         crates = {
@@ -42,12 +31,8 @@ with lib; {
           completion = mkDefault false;
         };
         settings = {
-          cargo = {
-            allFeatures = mkDefault false;
-          };
-          checkOnSave = {
-            command = mkDefault "check";
-          };
+          cargo = { allFeatures = mkDefault false; };
+          checkOnSave = { command = mkDefault "check"; };
         };
       };
     };

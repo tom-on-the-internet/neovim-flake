@@ -1,14 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 with lib;
 with builtin; {
-  imports = [
-    ./config.nix
-    ./lsp.nix
-    ./langs
-  ];
+  imports = [ ./config.nix ./lsp.nix ./langs ];
 }

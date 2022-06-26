@@ -1,25 +1,20 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 with lib;
-with builtins; let
-  cfg = config.vim.git;
+with builtins;
+let cfg = config.vim.git;
 in {
   options.vim.git = {
     signs = {
       enable = mkOption {
         type = types.bool;
-		default = false;
+        default = false;
         description = "Enable Gitsigns";
       };
     };
     messenger = {
       enable = mkOption {
         type = types.bool;
-		default = false;
+        default = false;
         description = "Enable git messenge";
       };
     };
@@ -27,16 +22,8 @@ in {
 
   config = {
     vim.startPlugins = with pkgs.neovimPlugins; [
-      (
-        if (cfg.signs.enable)
-        then gitsigns
-        else null
-      )
-      (
-        if (cfg.messenger.enable)
-        then git-messenger
-        else null
-      )
+      (if (cfg.signs.enable) then gitsigns else null)
+      (if (cfg.messenger.enable) then git-messenger else null)
     ];
 
     vim.luaConfigRC = mkIf (cfg.signs.enable) ''
