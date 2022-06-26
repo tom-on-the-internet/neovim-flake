@@ -1,14 +1,16 @@
-{inputs, ...}: final: prev: let
+{ inputs, ... }:
+final: prev:
+let
   inherit (prev.vimUtils) buildVimPluginFrom2Nix;
 
-  treesitterGrammars = prev.tree-sitter.withPlugins (_: prev.tree-sitter.allGrammars);
+  treesitterGrammars =
+    prev.tree-sitter.withPlugins (_: prev.tree-sitter.allGrammars);
 
-  plugins = builtins.filter (s: (builtins.match "plugin:.*" s) != null) (builtins.attrNames inputs);
+  plugins = builtins.filter (s: (builtins.match "plugin:.*" s) != null)
+    (builtins.attrNames inputs);
   plugName = input:
-    builtins.substring
-    (builtins.stringLength "plugin:")
-    (builtins.stringLength input)
-    input;
+    builtins.substring (builtins.stringLength "plugin:")
+    (builtins.stringLength input) input;
 
   buildPlug = name:
     buildVimPluginFrom2Nix {
@@ -25,10 +27,8 @@
       #  '' else "";
     };
 in {
-  neovimPlugins = builtins.listToAttrs (map
-    (plugin: {
-      name = plugName plugin;
-      value = buildPlug plugin;
-    })
-    plugins);
+  neovimPlugins = builtins.listToAttrs (map (plugin: {
+    name = plugName plugin;
+    value = buildPlug plugin;
+  }) plugins);
 }

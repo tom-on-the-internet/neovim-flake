@@ -3,19 +3,18 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    neovim-flake = {
-      url = "github:neovim/neovim?dir=contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils = {
+      #inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:numtide/flake-utils";
     };
+    neovim-flake.url = "github:neovim/neovim?dir=contrib";
+    neovim-flake.inputs.nixpkgs.follows = "nixpkgs";
 
     # Inputs used by the home-manager module
     stylua = {
       url = "github:johnnymorganz/stylua";
       flake = false;
     };
-
-    # build rust crates
     naersk.url = "github:nix-community/naersk";
 
     # Theme
@@ -119,10 +118,10 @@
       url = "github:nvim-treesitter/nvim-treesitter-refactor";
       flake = false;
     };
-    "plugin:nvim-treesitter-context" = {
-      url = "github:nvim-treesitter/nvim-treesitter-context";
-      flake = false;
-    };
+	"plugin:nvim-treesitter-context" = {
+	  url = "github:nvim-treesitter/nvim-treesitter-context";
+	  flake = false;
+	};
 
     # Filetree
     "plugin:nvim-tree-lua" = {
@@ -197,9 +196,15 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  } @ inputs:
+    flake-utils.lib.eachDefaultSystem
+    (
+      system: let
         pluginOverlay = lib.buildPluginOverlay;
 
         pkgs = import nixpkgs {
@@ -207,19 +212,23 @@
           overlays = [
             pluginOverlay
             (final: prev: {
-              neovim-unwrapped =
-                inputs.neovim-flake.packages.${prev.system}.neovim;
+              neovim-unwrapped = inputs.neovim-flake.packages.${prev.system}.neovim;
             })
           ];
         };
 
-        lib = import ./lib { inherit pkgs inputs; };
+        lib = import ./lib {inherit pkgs inputs;};
         neovimBuilder = lib.neovimBuilder;
       in rec {
-        defaultApp = packages.neovimTom;
-        defaultPackage = packages.neovimTom;
+        defaultApp = packages.neovimTraxys;
+        defaultPackage = packages.neovimTraxys;
 
-        home-managerModule = { config, lib, pkgs, ... }:
+        home-managerModule = {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
           import ./home-manager.nix {
             inherit config lib pkgs;
             stylua = inputs.stylua;
@@ -228,13 +237,14 @@
 
         overlay = self: super: {
           inherit neovimBuilder;
-          neovimTom = packages.neovimTom;
+          neovimTraxys = packages.neovimTraxys;
           neovimPlugins = pkgs.neovimPlugins;
         };
 
-        packages.neovimTom = neovimBuilder {
+        packages.neovimTraxys = neovimBuilder {
           config = import ./config.nix;
           debug = false;
         };
-      });
+      }
+    );
 }
