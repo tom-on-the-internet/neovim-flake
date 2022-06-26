@@ -159,11 +159,11 @@
     };
 
     lang = {
-      c = { enable = true; };
+      c = { enable = false; };
       nix = { enable = true; };
       bash = { enable = true; };
       rust = {
-        enable = true;
+        enable = false;
         crates = {
           enable = true;
           completion = true;
