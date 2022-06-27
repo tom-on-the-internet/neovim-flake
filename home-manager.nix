@@ -12,7 +12,9 @@
     })
     shellcheck
     ripgrep
+    cowsay
   ];
 
   home.sessionVariables.EDITOR = "nvim";
+  home.sessionVariables.CHECK_ME = "yay";
 }

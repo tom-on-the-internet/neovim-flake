@@ -132,19 +132,14 @@
 
   vim.lsp = {
     enable = true;
-
     lightbulb = true;
     diagnosticsPopup = true;
-
     signatures = { enable = true; };
-
     format = {
       enable = true;
       disabledClients = [ "rnix" ];
     };
-
     lspLoading = { enable = true; };
-
     null-ls = {
       enable = true;
 
@@ -160,11 +155,8 @@
 
     lang = {
       c = { enable = false; };
-
       nix = { enable = true; };
-
       bash = { enable = true; };
-
       rust = {
         enable = true;
         crates = {

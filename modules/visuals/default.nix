@@ -1,20 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 with lib;
-with builtins; let
+with builtins;
+let
   cfg = config.vim.visuals;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
-  luaBool = b:
-    if b
-    then "true"
-    else "false";
+  writeIf = cond: msg: if cond then msg else "";
+  luaBool = b: if b then "true" else "false";
 in {
   options.vim.visuals = {
     nvimWebDevicons = {
@@ -63,37 +53,28 @@ in {
     vim.visuals.plantumlSyntax.enable = mkDefault false;
 
     vim.startPlugins = with pkgs.neovimPlugins; [
-      (
-        if cfg.nvimWebDevicons.enable
-        then nvim-web-devicons
-        else null
-      )
-      (
-        if cfg.indentline.enable
-        then indent-blankline
-        else null
-      )
-      (
-        if cfg.plantumlSyntax.enable
-        then plantuml-syntax
-        else null
-      )
+      (if cfg.nvimWebDevicons.enable then nvim-web-devicons else null)
+      (if cfg.indentline.enable then indent-blankline else null)
+      (if cfg.plantumlSyntax.enable then plantuml-syntax else null)
     ];
 
-    /*
-      vim.g.indentLine_concealcursor = "inc"
-     vim.g.indentLine_conceallevel = 2
-     vim.g.indentLine_fileTypeExclude = { "markdown", "json" }
-     */
+    /* vim.g.indentLine_concealcursor = "inc"
+       vim.g.indentLine_conceallevel = 2
+       vim.g.indentLine_fileTypeExclude = { "markdown", "json" }
+    */
     vim.luaConfigRC = ''
       ${writeIf cfg.indentline.enable ''
         require("indent_blankline").setup {
         	show_current_context = ${luaBool cfg.indentline.showContext},
-        	show_current_context_start = ${luaBool cfg.indentline.showContextStart},
+        	show_current_context_start = ${
+           luaBool cfg.indentline.showContextStart
+         },
          }
       ''}
       ${writeIf cfg.nvimWebDevicons.enable ''
-        require("nvim-web-devicons").setup({ default = ${luaBool cfg.nvimWebDevicons.default} })
+        require("nvim-web-devicons").setup({ default = ${
+          luaBool cfg.nvimWebDevicons.default
+        } })
       ''}
     '';
   };
