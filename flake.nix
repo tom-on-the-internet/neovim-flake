@@ -118,10 +118,10 @@
       url = "github:nvim-treesitter/nvim-treesitter-refactor";
       flake = false;
     };
-	"plugin:nvim-treesitter-context" = {
-	  url = "github:nvim-treesitter/nvim-treesitter-context";
-	  flake = false;
-	};
+    "plugin:nvim-treesitter-context" = {
+      url = "github:nvim-treesitter/nvim-treesitter-context";
+      flake = false;
+    };
 
     # Filetree
     "plugin:nvim-tree-lua" = {
@@ -196,15 +196,9 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    ...
-  } @ inputs:
-    flake-utils.lib.eachDefaultSystem
-    (
-      system: let
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
         pluginOverlay = lib.buildPluginOverlay;
 
         pkgs = import nixpkgs {
@@ -212,23 +206,19 @@
           overlays = [
             pluginOverlay
             (final: prev: {
-              neovim-unwrapped = inputs.neovim-flake.packages.${prev.system}.neovim;
+              neovim-unwrapped =
+                inputs.neovim-flake.packages.${prev.system}.neovim;
             })
           ];
         };
 
-        lib = import ./lib {inherit pkgs inputs;};
+        lib = import ./lib { inherit pkgs inputs; };
         neovimBuilder = lib.neovimBuilder;
       in rec {
-        defaultApp = packages.neovimTraxys;
-        defaultPackage = packages.neovimTraxys;
+        defaultApp = packages.neovimTom;
+        defaultPackage = packages.neovimTom;
 
-        home-managerModule = {
-          config,
-          lib,
-          pkgs,
-          ...
-        }:
+        home-managerModule = { config, lib, pkgs, ... }:
           import ./home-manager.nix {
             inherit config lib pkgs;
             stylua = inputs.stylua;
@@ -237,14 +227,13 @@
 
         overlay = self: super: {
           inherit neovimBuilder;
-          neovimTraxys = packages.neovimTraxys;
+          neovimTom = packages.neovimTom;
           neovimPlugins = pkgs.neovimPlugins;
         };
 
-        packages.neovimTraxys = neovimBuilder {
+        packages.neovimTom = neovimBuilder {
           config = import ./config.nix;
           debug = false;
         };
-      }
-    );
+      });
 }

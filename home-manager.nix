@@ -1,13 +1,6 @@
-{
-  config,
-  pkgs,
-  lib,
-  naersk-lib,
-  stylua,
-  ...
-}: {
+{ config, pkgs, lib, naersk-lib, stylua, ... }: {
   home.packages = with pkgs; [
-    neovimTraxys
+    neovimTom
     rust-analyzer
     clang-tools
     nodePackages.bash-language-server
